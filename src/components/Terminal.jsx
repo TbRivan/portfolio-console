@@ -1,15 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Terminal as TermIcon, Copy, Check } from "lucide-react";
+import { Terminal as TermIcon, Copy, Check, Download, X, ExternalLink } from "lucide-react";
 
 import {
   SQL_SKILLS_OUTPUT,
   SQL_PROJECTS_OUTPUT,
   SQL_EXPERIENCE_OUTPUT,
+  SQL_EDUCATION_OUTPUT,
   SQL_CONTACT_OUTPUT,
   SQL_METRICS_OUTPUT,
   CAT_ABOUT_OUTPUT,
   TOUR_OUTPUT,
   WHOAMI_OUTPUT,
+  CV_DOWNLOAD_OUTPUT,
   GOT_VALAR_MORGHULIS_OUTPUT,
   getRandomValarMorghulisOutput,
   SQL_PROFESSIONAL_SECURITY_LOGS,
@@ -24,6 +26,12 @@ import LightningTypewriterText from "./LightningTypewriterText";
 import SuggestionPopover from "./SuggestionPopover";
 import ContactTable from "./ContactTable";
 
+const CV_CONFIRM_SUGGESTIONS = [
+  { cmd: "v", desc: "view CV_Tubagus_Rivan.pdf in new tab" },
+  { cmd: "d", desc: "download CV_Tubagus_Rivan.pdf" },
+  { cmd: "n", desc: "cancel" },
+];
+
 export default function Terminal({ onReturnToGame }) {
   const terminalRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -37,6 +45,7 @@ export default function Terminal({ onReturnToGame }) {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [isTyping, setIsTyping] = useState(true); // Initially true for 1 second boot delay
   const [crashedState, setCrashedState] = useState(false);
+  const [awaitingCvConfirm, setAwaitingCvConfirm] = useState(false);
   const [isRebooting, setIsRebooting] = useState(false);
   const [showHintBadge, setShowHintBadge] = useState(true);
 
@@ -47,9 +56,22 @@ export default function Terminal({ onReturnToGame }) {
     {
       id: "welcome",
       type: "system",
-      content: `Linux kernel 6.8.0-generic x86_64\nWelcome to the Backend Engineer Terminal Shell.\nType '/help' for system manual or 'mysql -u root -p' to connect to database.`,
+      content: `Linux kernel 6.8.0-generic x86_64\nWelcome to Tubagus Rivan's Software Developer Terminal Shell.\nType '/help' for system manual, '/game' to play RPS game, '/cv' to view or download CV, or 'mysql -u root -p' for database.`,
     },
   ]);
+
+  const openCvNewTab = () => {
+    window.open("/CV_Tubagus_Rivan.pdf", "_blank", "noopener,noreferrer");
+  };
+
+  const triggerCvDownload = () => {
+    const link = document.createElement("a");
+    link.href = "/CV_Tubagus_Rivan.pdf";
+    link.download = "CV_Tubagus_Rivan.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   // 1 Second Initial Boot Delay when first visiting terminal
   useEffect(() => {
@@ -59,10 +81,13 @@ export default function Terminal({ onReturnToGame }) {
     return () => clearTimeout(bootTimer);
   }, []);
 
-  // Autocomplete Suggestions Filter based on Terminal Mode
+  // Autocomplete Suggestions Filter based on Terminal Mode & Confirmation State
   const searchTerm = inputVal.trim().toLowerCase();
-  const currentCommandList =
-    terminalMode === "mysql" ? MYSQL_CLI_COMMANDS : LINUX_CLI_COMMANDS;
+  const currentCommandList = awaitingCvConfirm
+    ? CV_CONFIRM_SUGGESTIONS
+    : terminalMode === "mysql"
+      ? MYSQL_CLI_COMMANDS
+      : LINUX_CLI_COMMANDS;
   const filteredSuggestions =
     searchTerm.length > 0 && !crashedState && !isTyping
       ? currentCommandList.filter((sug) =>
@@ -98,9 +123,53 @@ export default function Terminal({ onReturnToGame }) {
     }
   };
 
+  const handleCvDecision = (action) => {
+    setAwaitingCvConfirm(false);
+    const cmdId = Date.now();
+    const commandText = action === "view" ? "v" : action === "download" ? "d" : "n";
+    const userEntry = {
+      id: `cmd-${cmdId}`,
+      type: "command",
+      text: commandText,
+      mode: terminalMode,
+    };
+
+    if (action === "view") {
+      openCvNewTab();
+      const viewEntry = {
+        id: `resp-${cmdId}`,
+        type: "typed-output",
+        cmdKey: "cv-viewed",
+        content: `[✓] Opening CV_Tubagus_Rivan.pdf in a new tab ...\n[i] Direct file link: /CV_Tubagus_Rivan.pdf`,
+      };
+      setIsTyping(false);
+      setOutputBuffer((prev) => [...prev, userEntry, viewEntry]);
+    } else if (action === "download") {
+      triggerCvDownload();
+      const acceptEntry = {
+        id: `resp-${cmdId}`,
+        type: "typed-output",
+        cmdKey: "cv-confirmed",
+        content: `[✓] Download confirmed! Initiating download for CV_Tubagus_Rivan.pdf ...\n[i] File transfer started. Direct link: /CV_Tubagus_Rivan.pdf`,
+      };
+      setIsTyping(false);
+      setOutputBuffer((prev) => [...prev, userEntry, acceptEntry]);
+    } else {
+      const declineEntry = {
+        id: `resp-${cmdId}`,
+        type: "typed-output",
+        cmdKey: "cv-cancelled",
+        content: `[x] Action cancelled by user. Returning to terminal shell.`,
+      };
+      setIsTyping(false);
+      setOutputBuffer((prev) => [...prev, userEntry, declineEntry]);
+    }
+    setInputVal("");
+  };
+
   const handleCommandExecution = (cmdString) => {
     const rawCmd = cmdString.trim();
-    if (!rawCmd && !crashedState) return;
+    if (!rawCmd && !crashedState && !awaitingCvConfirm) return;
 
     const cmd = rawCmd.toLowerCase();
     const cmdId = Date.now();
@@ -151,8 +220,64 @@ export default function Terminal({ onReturnToGame }) {
       }
     }
 
+    // AWAITING CV ACTION [v/d/n]
+    if (awaitingCvConfirm) {
+      if (
+        cmd === "v" ||
+        cmd === "view" ||
+        cmd === "open" ||
+        cmd === "tab" ||
+        cmd === "see" ||
+        cmd === "1"
+      ) {
+        handleCvDecision("view");
+        return;
+      } else if (
+        cmd === "d" ||
+        cmd === "download" ||
+        cmd === "2"
+      ) {
+        handleCvDecision("download");
+        return;
+      } else if (
+        cmd === "y" ||
+        cmd === "yes" ||
+        cmd === "yep"
+      ) {
+        // Default positive confirmation to view in new tab
+        handleCvDecision("view");
+        return;
+      } else if (
+        cmd === "n" ||
+        cmd === "no" ||
+        cmd === "nope" ||
+        cmd === "cancel" ||
+        cmd === "c" ||
+        cmd === "3"
+      ) {
+        handleCvDecision("cancel");
+        return;
+      } else if (cmd === "/clear" || cmd === "/cls") {
+        setAwaitingCvConfirm(false);
+        setOutputBuffer([]);
+        setInputVal("");
+        return;
+      } else {
+        const retryEntry = {
+          id: `resp-${cmdId}`,
+          type: "cv-prompt",
+          cmdKey: "cv-prompt",
+          content: `Choose an option for CV_Tubagus_Rivan.pdf: 'v' (view in new tab), 'd' (download), or 'n' (cancel):`,
+        };
+        setIsTyping(false);
+        setOutputBuffer((prev) => [...prev, userEntry, retryEntry]);
+        setInputVal("");
+        return;
+      }
+    }
+
     // ----------------------------------------------------
-    // MODE 1: LINUX KERNEL SHELL (backend-dev@kernel-node:~$ )
+    // MODE 1: LINUX KERNEL SHELL (tbrivan@dev-box:~$ )
     // ----------------------------------------------------
     if (terminalMode === "linux") {
       if (cmd === "/clear" || cmd === "/cls") {
@@ -161,8 +286,43 @@ export default function Terminal({ onReturnToGame }) {
         return;
       }
 
-      if (cmd === "/game" || cmd === "/exit" || cmd === "/quit") {
+      if (cmd === "/game") {
         onReturnToGame();
+        return;
+      }
+
+      if (cmd === "/exit" || cmd === "/quit" || cmd === "exit" || cmd === "quit") {
+        const exitEntry = {
+          id: `resp-${cmdId}`,
+          type: "typed-output",
+          cmdKey: cmd,
+          content: `logout: Session active. Type '/game' to switch to RPS game arena, or '/help' for command reference.`,
+        };
+        setIsTyping(false);
+        setOutputBuffer((prev) => [...prev, userEntry, exitEntry]);
+        setInputVal("");
+        return;
+      }
+
+      if (
+        cmd === "/cv" ||
+        cmd === "cv" ||
+        cmd === "/download" ||
+        cmd === "/download-cv" ||
+        cmd === "download cv" ||
+        cmd === "curl -o cv.pdf" ||
+        cmd === "wget cv.pdf"
+      ) {
+        setAwaitingCvConfirm(true);
+        const cvPromptEntry = {
+          id: `resp-${cmdId}`,
+          type: "cv-prompt",
+          cmdKey: "cv-prompt",
+          content: `Tubagus Rivan's CV (CV_Tubagus_Rivan.pdf): Choose to view in a new tab or download.`,
+        };
+        setIsTyping(false);
+        setOutputBuffer((prev) => [...prev, userEntry, cvPromptEntry]);
+        setInputVal("");
         return;
       }
 
@@ -223,7 +383,7 @@ export default function Terminal({ onReturnToGame }) {
       } else if (cmd.startsWith("select") || cmd.includes("from")) {
         responseContent = `bash: SELECT: command not found. Enter MySQL database shell first using 'mysql -u root -p'.`;
       } else {
-        responseContent = `bash: ${rawCmd}: command not found.`;
+        responseContent = `bash: ${rawCmd}: command not found. Type '/help' for command reference.`;
       }
 
       const responseEntry = {
@@ -243,6 +403,11 @@ export default function Terminal({ onReturnToGame }) {
     // MODE 2: MYSQL DATABASE SHELL (mysql> )
     // ----------------------------------------------------
     if (terminalMode === "mysql") {
+      if (cmd === "/game") {
+        onReturnToGame();
+        return;
+      }
+
       if (
         cmd === "exit" ||
         cmd === "exit;" ||
@@ -297,6 +462,28 @@ export default function Terminal({ onReturnToGame }) {
       ) {
         responseContent = SQL_EXPERIENCE_OUTPUT;
       } else if (
+        cmd === "select * from education;" ||
+        cmd === "select * from education"
+      ) {
+        responseContent = SQL_EDUCATION_OUTPUT;
+      } else if (
+        cmd === "select * from cv;" ||
+        cmd === "select * from cv" ||
+        cmd === "download cv;" ||
+        cmd === "download cv"
+      ) {
+        setAwaitingCvConfirm(true);
+        const cvPromptEntry = {
+          id: `resp-${cmdId}`,
+          type: "cv-prompt",
+          cmdKey: "cv-prompt",
+          content: `Tubagus Rivan's CV (CV_Tubagus_Rivan.pdf): Choose to view in a new tab or download.`,
+        };
+        setIsTyping(false);
+        setOutputBuffer((prev) => [...prev, userEntry, cvPromptEntry]);
+        setInputVal("");
+        return;
+      } else if (
         cmd === "select * from metrics;" ||
         cmd === "select * from metrics"
       ) {
@@ -311,9 +498,10 @@ export default function Terminal({ onReturnToGame }) {
 | skills             |
 | projects           |
 | career_history     |
+| education          |
 | system_metrics     |
 +--------------------+
-4 rows in set (0.001 sec)`;
+5 rows in set (0.001 sec)`;
       } else {
         responseContent = `ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '${rawCmd}' at line 1`;
       }
@@ -339,6 +527,9 @@ export default function Terminal({ onReturnToGame }) {
       if (!selectedText) {
         e.preventDefault();
         const cmdId = Date.now();
+        if (awaitingCvConfirm) {
+          setAwaitingCvConfirm(false);
+        }
         const cancelEntry = {
           id: `cmd-cancel-${cmdId}`,
           type: "command",
@@ -403,7 +594,7 @@ export default function Terminal({ onReturnToGame }) {
   };
 
   const copyEmail = () => {
-    navigator.clipboard.writeText("backend.engineer@kernel-dev.io");
+    navigator.clipboard.writeText("tbrivan22@gmail.com");
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
   };
@@ -444,7 +635,7 @@ export default function Terminal({ onReturnToGame }) {
                 {
                   id: `reboot-done-${Date.now()}`,
                   type: "system",
-                  content: `[OK] System Kernel Rebooted successfully.\nWelcome back to the Backend Engineer Terminal Shell.`,
+                  content: `[OK] System Kernel Rebooted successfully.\nWelcome back to Tubagus Rivan's Software Developer Shell.`,
                 },
               ]);
               setIsTyping(true);
@@ -507,7 +698,7 @@ export default function Terminal({ onReturnToGame }) {
             }}
           >
             <TermIcon size={15} color="var(--terminal-cyan)" />
-            <span>backend-dev@kernel-node: ~ (psql / zsh)</span>
+            <span>tbrivan@dev-box: ~ (zsh)</span>
           </div>
 
           {/* Right Spacer */}
@@ -547,16 +738,18 @@ export default function Terminal({ onReturnToGame }) {
                       style={{
                         color: crashedState
                           ? "#ef4444"
-                          : item.mode === "mysql"
-                            ? "#38bdf8"
-                            : "var(--terminal-green)",
+                          : item.text === "y" && awaitingCvConfirm
+                            ? "var(--terminal-green)"
+                            : item.mode === "mysql"
+                              ? "#38bdf8"
+                              : "var(--terminal-green)",
                       }}
                     >
                       {crashedState
                         ? "kernel-panic> "
                         : item.mode === "mysql"
                           ? "mysql> "
-                          : "backend-dev@kernel-node:~$ "}
+                          : "tbrivan@dev-box:~$ "}
                     </span>
                     <span>{item.text}</span>
                   </div>
@@ -585,10 +778,130 @@ export default function Terminal({ onReturnToGame }) {
                   </div>
                 )}
 
+                {/* CV Action Options Prompt Card */}
+                {item.type === "cv-prompt" && (
+                  <div
+                    style={{
+                      margin: "0.5rem 0",
+                      fontFamily: "var(--font-mono)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: "var(--terminal-amber)",
+                        marginBottom: "0.5rem",
+                        fontSize: "0.88rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.45rem",
+                        fontWeight: 600,
+                      }}
+                    >
+                      <Download size={15} color="var(--terminal-amber)" />
+                      <span>{item.content}</span>
+                    </div>
+
+                    {awaitingCvConfirm && isLast && (
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "0.6rem",
+                          alignItems: "center",
+                          marginTop: "0.4rem",
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCvDecision("view");
+                          }}
+                          className="chip-btn"
+                          style={{
+                            cursor: "pointer",
+                            fontWeight: 700,
+                            padding: "0.3rem 0.85rem",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem",
+                            background: "rgba(6, 182, 212, 0.2)",
+                            border: "1px solid var(--terminal-cyan)",
+                            color: "var(--terminal-cyan)",
+                          }}
+                        >
+                          <ExternalLink size={13} /> View in New Tab (v)
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCvDecision("download");
+                          }}
+                          className="chip-btn"
+                          style={{
+                            cursor: "pointer",
+                            fontWeight: 700,
+                            padding: "0.3rem 0.85rem",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem",
+                            background: "rgba(16, 185, 129, 0.2)",
+                            border: "1px solid var(--terminal-green)",
+                            color: "var(--terminal-green)",
+                          }}
+                        >
+                          <Download size={13} /> Download PDF (d)
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCvDecision("cancel");
+                          }}
+                          className="chip-btn"
+                          style={{
+                            cursor: "pointer",
+                            fontWeight: 700,
+                            padding: "0.3rem 0.85rem",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem",
+                            background: "rgba(239, 68, 68, 0.15)",
+                            border: "1px solid #ef4444",
+                            color: "#ef4444",
+                          }}
+                        >
+                          <X size={13} /> Cancel (n)
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {item.type === "typed-output" && (
                   <div>
                     {item.cmdKey.includes("contact") ? (
                       <ContactTable />
+                    ) : item.cmdKey.startsWith("cv-") ? (
+                      <div
+                        style={{
+                          margin: "0.45rem 0",
+                          fontFamily: "var(--font-mono)",
+                        }}
+                      >
+                        <span
+                          style={{
+                            whiteSpace: "pre-wrap",
+                            color:
+                              item.cmdKey === "cv-confirmed" ||
+                              item.cmdKey === "cv-viewed"
+                                ? "var(--terminal-green)"
+                                : "#f87171",
+                            display: "block",
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          {item.content}
+                        </span>
+                      </div>
                     ) : isLast ? (
                       <LightningTypewriterText
                         text={item.content}
@@ -619,17 +932,21 @@ export default function Terminal({ onReturnToGame }) {
                   style={{
                     color: crashedState
                       ? "#ef4444"
-                      : terminalMode === "mysql"
-                        ? "#38bdf8"
-                        : "var(--terminal-green)",
+                      : awaitingCvConfirm
+                        ? "var(--terminal-amber)"
+                        : terminalMode === "mysql"
+                          ? "#38bdf8"
+                          : "var(--terminal-green)",
                     fontWeight: 600,
                   }}
                 >
                   {crashedState
                     ? "[REBOOT?] Y/n > "
-                    : terminalMode === "mysql"
-                      ? "mysql> "
-                      : "backend-dev@kernel-node:~$ "}
+                    : awaitingCvConfirm
+                      ? "cv [v/d/n] > "
+                      : terminalMode === "mysql"
+                        ? "mysql> "
+                        : "tbrivan@dev-box:~$ "}
                 </span>
                 <input
                   ref={inputRef}
@@ -641,9 +958,11 @@ export default function Terminal({ onReturnToGame }) {
                   placeholder={
                     crashedState
                       ? "type 'Y' to restart..."
-                      : terminalMode === "mysql"
-                        ? "try 'SELECT * FROM skills;'"
-                        : "try 'mysql -u root -p'"
+                      : awaitingCvConfirm
+                        ? "type 'v' to view in new tab, 'd' to download, or 'n' to cancel..."
+                        : terminalMode === "mysql"
+                          ? "try 'SELECT * FROM skills;'"
+                          : "try 'mysql -u root -p' or 'cat about.md'"
                   }
                   style={{
                     flex: 1,
@@ -652,9 +971,11 @@ export default function Terminal({ onReturnToGame }) {
                     outline: "none",
                     color: crashedState
                       ? "#ef4444"
-                      : terminalMode === "mysql"
-                        ? "#38bdf8"
-                        : "#ffffff",
+                      : awaitingCvConfirm
+                        ? "var(--terminal-amber)"
+                        : terminalMode === "mysql"
+                          ? "#38bdf8"
+                          : "#ffffff",
                     fontFamily: "var(--font-mono)",
                   }}
                 />
@@ -687,7 +1008,7 @@ export default function Terminal({ onReturnToGame }) {
                 [TIP] <strong>First time visiting?</strong>{" "}
                 {terminalMode === "mysql"
                   ? "Type 'SELECT * FROM skills;' or 'exit;' to return to Linux."
-                  : "Run 'mysql -u root -p' to connect to database or '/help' for full manual."}
+                  : "Run '/cv' to view/download my CV or '/help' for full manual."}
               </span>
               <button
                 className="hint-close-btn"
@@ -724,11 +1045,13 @@ export default function Terminal({ onReturnToGame }) {
                     "SELECT * FROM skills;",
                     "SELECT * FROM projects;",
                     "SELECT * FROM experience;",
+                    "SELECT * FROM education;",
                     "SELECT * FROM metrics;",
                     "SHOW TABLES;",
                     "exit;",
                   ]
                 : [
+                    "/cv",
                     "/help",
                     "cat about.md",
                     "/whoami",
@@ -746,7 +1069,7 @@ export default function Terminal({ onReturnToGame }) {
                     e.stopPropagation();
                     handleCommandExecution(c);
                   }}
-                  className={`chip-btn ${c === "/help" || c === "mysql -u root -p" ? "chip-btn-tour" : ""}`}
+                  className={`chip-btn ${c === "/cv" || c === "/help" || c === "mysql -u root -p" ? "chip-btn-tour" : ""}`}
                 >
                   {c}
                 </button>
@@ -782,6 +1105,9 @@ export default function Terminal({ onReturnToGame }) {
                 <option value="SELECT * FROM experience;">
                   SELECT * FROM experience;
                 </option>
+                <option value="SELECT * FROM education;">
+                  SELECT * FROM education;
+                </option>
                 <option value="SELECT * FROM metrics;">
                   SELECT * FROM metrics;
                 </option>
@@ -790,6 +1116,7 @@ export default function Terminal({ onReturnToGame }) {
               </>
             ) : (
               <>
+                <option value="/cv">/cv — view or download CV (PDF)</option>
                 <option value="/help">
                   /help — system manual & command guide
                 </option>
@@ -805,7 +1132,7 @@ export default function Terminal({ onReturnToGame }) {
                 <option value="mysql -u root -p">
                   mysql -u root -p — connect to mysql shell
                 </option>
-                <option value="/game">/game — return to RPS game</option>
+                <option value="/game">/game — play RPS game arena</option>
                 <option value="sudo rm -rf /">sudo rm -rf /</option>
                 <option value="/clear">/clear</option>
               </>

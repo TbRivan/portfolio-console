@@ -31,7 +31,7 @@ export default function ScreenTransitionLoader({ isTransitioning, targetScreen }
             color: targetScreen === 'terminal' ? 'var(--terminal-green)' : 'var(--terminal-cyan)'
           }}>
             {targetScreen === 'terminal' 
-              ? '[+] Booting PostgreSQL & Kernel Shell...' 
+              ? '[+] Returning to Terminal Shell...' 
               : '[+] Context Switching to Game Arena...'}
           </div>
 

@@ -1,18 +1,18 @@
-export const SQL_SKILLS_OUTPUT = `SELECT id, category, skill, proficiency, years_exp 
-FROM portfolio.skills 
-ORDER BY proficiency DESC;
+export const SQL_SKILLS_OUTPUT = `SELECT id, category, skill 
+FROM portfolio.skills;
 
-+----+--------------+-------------------+-------------+-----------+
-| ID | CATEGORY     | TECHNICAL SKILL   | PROFICIENCY | YEARS_EXP |
-+----+--------------+-------------------+-------------+-----------+
-| 01 | Language     | Go (Golang)       | 98%         | 5 Years   |
-| 02 | Database     | PostgreSQL        | 95%         | 6 Years   |
-| 03 | System       | Distributed Queue | 94%         | 4 Years   |
-| 04 | In-Memory    | Redis             | 96%         | 5 Years   |
-| 05 | Messaging    | Apache Kafka      | 92%         | 3 Years   |
-| 06 | DevOps       | Docker & K8s      | 90%         | 4 Years   |
-+----+--------------+-------------------+-------------+-----------+
-6 rows in set (0.001 sec)`;
++----+--------------+---------------------------------+
+| ID | CATEGORY     | TECHNICAL SKILL                 |
++----+--------------+---------------------------------+
+| 01 | Language     | TypeScript, JavaScript & Golang |
+| 02 | Framework    | React & Next.js                 |
+| 03 | Backend      | Node.js & NestJS                |
+| 04 | Database     | MySQL & MongoDB                 |
+| 05 | In-Memory    | Redis                           |
+| 06 | DevOps       | Docker & Kubernetes             |
+| 07 | Soft Skills  | Problem Solving & Agile         |
++----+--------------+---------------------------------+
+7 rows in set (0.001 sec)`;
 
 export const SQL_PROJECTS_OUTPUT = `SELECT id, name, stack, p99_latency, status 
 FROM portfolio.projects 
@@ -21,37 +21,51 @@ WHERE status = 'PRODUCTION';
 +----+-------------------------------+------------------------+-------------+------------+
 | ID | SERVICE NAME                  | TECH STACK             | P99 LATENCY | STATUS     |
 +----+-------------------------------+------------------------+-------------+------------+
-| 01 | Distributed Task Queue Engine | Go, Redis, gRPC        | 14ms        | PRODUCTION |
-| 02 | High-Throughput API Gateway   | Node.js, TS, NGINX     | 8ms         | PRODUCTION |
-| 03 | Real-Time Event Stream Bus    | Kafka, Python, PG      | 22ms        | PRODUCTION |
-| 04 | PostgreSQL Auto-Sharding      | Go, PostgreSQL, Raft   | 11ms        | PRODUCTION |
+| 01 | Scalable Enterprise Web App   | React, Node.js, MySQL  | 18ms        | PRODUCTION |
+| 02 | High-Perf RESTful API Gateway | NestJS, TypeScript, PG | 12ms        | PRODUCTION |
+| 03 | WebGIS Intelligence Platform  | JavaScript, HTML, CSS  | 25ms        | PRODUCTION |
+| 04 | SCADA & HMI Automation Engine | PLC Logic, HMI, SCADA  | 5ms         | PRODUCTION |
+| 05 | In-Memory Cache & Query Opt   | Redis, Node.js, Mongo  | 4ms         | PRODUCTION |
 +----+-------------------------------+------------------------+-------------+------------+
-4 rows in set (0.002 sec)`;
+5 rows in set (0.002 sec)`;
 
-export const SQL_EXPERIENCE_OUTPUT = `SELECT company, role, period, p99_achievement 
+export const SQL_EXPERIENCE_OUTPUT = `SELECT company, role, period, location, p99_achievement 
 FROM portfolio.career_history;
 
-+---------------------------+-----------------------------------+----------------+--------------------------------+
-| COMPANY                   | ROLE                              | PERIOD         | P99 ACHIEVEMENT                |
-+---------------------------+-----------------------------------+----------------+--------------------------------+
-| Nexus Infrastructure Lab  | Lead Backend Systems Engineer     | 2023 — Present | Handled 50k+ req/sec (P99 14ms)|
-| Vanguard Systems          | Senior Database & API Engineer    | 2021 — 2023    | Built PG auto-sharding pipeline|
-| Monolith Tech             | Backend Software Developer        | 2019 — 2021    | Built Redis rate limiter (8ms) |
-+---------------------------+-----------------------------------+----------------+--------------------------------+
++-----------------------------------+---------------------------+----------------+------------------+------------------------------------+
+| COMPANY                           | ROLE                      | PERIOD         | LOCATION         | P99 ACHIEVEMENT                    |
++-----------------------------------+---------------------------+----------------+------------------+------------------------------------+
+| PT. Inovasi Solusi Internasional  | Software Developer        | 2023 — Present | Jakarta, ID      | Scaled React/Node, -30% DB latency |
+| PT. Abbauf Mulia Konsultan Tech   | Frontend Developer Intern | 2022           | Depok, ID        | Built WebGIS Intelligence Frontend |
+| PT. Nijimaru Kemasindo Sentosa    | HMI Engineer              | 2018 — 2021    | Jakarta, ID      | Factory automation, SCADA & PLC    |
++-----------------------------------+---------------------------+----------------+------------------+------------------------------------+
 3 rows in set (0.001 sec)`;
+
+export const SQL_EDUCATION_OUTPUT = `SELECT institution, degree_major, period, gpa, location 
+FROM portfolio.education;
+
++---------------------------+-----------------------------------+----------------+------+------------------+
+| INSTITUTION               | DEGREE / MAJOR                    | PERIOD         | GPA  | LOCATION         |
++---------------------------+-----------------------------------+----------------+------+------------------+
+| Universitas Pakuan        | Bachelor of Computer Science      | 2019 — 2024    | 3.59 | Bogor, Indonesia |
+| SMK Amaliah 1 Ciawi       | Computer & Network Engineering    | 2015 — 2018    | N/A  | Bogor, Indonesia |
++---------------------------+-----------------------------------+----------------+------+------------------+
+2 rows in set (0.001 sec)`;
 
 export const SQL_CONTACT_OUTPUT = `SELECT channel, address 
 FROM portfolio.contact_channels;
 
-+----------+--------------------------------+
-| CHANNEL  | ADDRESS                        |
-+----------+--------------------------------+
-| Email    | backend.engineer@kernel-dev.io |
-| GitHub   | github.com/backend-dev         |
-| LinkedIn | linkedin.com/in/backend-dev    |
-| Twitter  | x.com/backend_dev              |
-+----------+--------------------------------+
-4 rows in set (0.001 sec)`;
++----------+------------------------------------+
+| CHANNEL  | ADDRESS                            |
++----------+------------------------------------+
+| Email    | tbrivan22@gmail.com                |
+| Phone    | +62 81210903492                    |
+| Location | Bogor, Indonesia                   |
+| GitHub   | github.com/tbrivan                 |
+| LinkedIn | linkedin.com/in/tubagus-rivan      |
+| Resume   | /CV_Tubagus_Rivan.pdf (type '/cv') |
++----------+------------------------------------+
+6 rows in set (0.001 sec)`;
 
 export const SQL_METRICS_OUTPUT = `SELECT metric_name, value, unit, status 
 FROM portfolio.system_metrics;
@@ -80,20 +94,22 @@ export const TOUR_OUTPUT = `====================================================
 ================================================================================
 
 [1] LINUX KERNEL SHELL COMMANDS
+    /cv                         - View in new tab or download CV (PDF)
     /help                       - Print system manual & command guide
-    cat about.md                - Display engineer profile & principles
+    cat about.md                - Display engineer profile & background
     /whoami                     - Print current user identity & role
     /contact                    - Display direct communication channels
     mysql -u root -p            - Connect to MySQL database shell session
     /valar-morghulis            - all men must die
     /clear                      - Flush terminal screen buffer
-    /game                       - Switch shell context back to RPS game
+    /game                       - Launch interactive RPS game arena
     sudo rm -rf /               - Recursively force remove root directory
 
 [2] MYSQL DATABASE SHELL COMMANDS (Run 'mysql -u root -p' to connect)
-    SELECT * FROM skills;       - Display tech stack & proficiency matrix
+    SELECT * FROM skills;       - Display tech stack & technical skills
     SELECT * FROM projects;     - Display production services & performance stats
     SELECT * FROM experience;   - Display career history & key achievements
+    SELECT * FROM education;    - Display academic history & qualifications
     SELECT * FROM metrics;      - Display real-time database & system telemetry
     exit                        - Close MySQL session and return to Linux shell
 
@@ -104,18 +120,28 @@ export const TOUR_OUTPUT = `====================================================
 
 ================================================================================`;
 
-export const WHOAMI_OUTPUT = `[HTTP 200 OK] User: Visitor | Quality: Tech Visionary`;
+export const WHOAMI_OUTPUT = `[HTTP 200 OK] User: Visitor | Identity: Tubagus Rivan Maulana Sidiq | Role: Software Developer`;
 
-export const CAT_ABOUT_OUTPUT = `ABOUT THE ENGINEER:
+export const CAT_ABOUT_OUTPUT = `ABOUT TUBAGUS RIVAN MAULANA SIDIQ:
 
-I am a Senior Backend Engineer specializing in high-concurrency microservices, 
-distributed systems, database optimization, and fault-tolerant event streaming.
+Software Developer with 3+ years of experience designing and maintaining scalable
+software solutions. Proficient in multiple programming languages and frameworks, with
+expertise in problem-solving, algorithm design, and software architecture.
 
-Core Architecture Principles:
-1. Low-Latency P99 Performance
-2. Zero Data Loss & Guaranteed Message Semantics
-3. Graceful Circuit Breaking & Auto-Recovery
-4. Clean Monospace Code & Infrastructure-as-Code`;
+Passionate about writing clean, efficient code and collaborating with cross-functional
+teams to deliver high-quality products. Continuously learning and adapting to new
+technologies in the ever-evolving tech landscape.
+
+Core Competencies:
+1. Fullstack & Backend: React, Next.js, Node.js, NestJS, Golang
+2. Database Optimization: MySQL, MongoDB, Redis (reduced response times by 30%)
+3. Architecture & APIs: RESTful services, third-party integrations, unit & integration testing
+4. Containerization & DevOps: Docker, Kubernetes, CI/CD, Agile/Scrum
+5. Systems & Automation: WebGIS intelligence interfaces, HMI & SCADA systems, PLC logic`;
+
+export const CV_DOWNLOAD_OUTPUT = `[+] Fetching CV document: CV_Tubagus_Rivan.pdf ...
+[✓] Initiating browser download for Tubagus Rivan's CV (PDF).
+[i] Direct file link: /CV_Tubagus_Rivan.pdf`;
 
 export const GOT_VALAR_MORGHULIS_VARIANTS = [
   `     Valar Dohaeris. ("All men must serve.")
@@ -128,7 +154,7 @@ export const GOT_VALAR_MORGHULIS_VARIANTS = [
    =#%%%%%%%%%%%%%#  -=*%%%  -%%%%%%%%%%%%%%+:
  :*%%%%%%%%%%%%%%%- =%%*.-%* :#%%%%%%%%%%%%%%%#-
 =%%%%%%%%%%%%%%%%%%%:%%+.=#*:%%%%%%%%%%%%%%%%%%%+
-%%%%%%%%%%%%%%%%%%%%%*%*-+%%%%%%%%%%%%%%%%%%%%%%-
+%%%%%%%%%%%%%%%%%%%%*%*-+%%%%%%%%%%%%%%%%%%%%%%-
  -#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-
    -#%%%%%%=  :+%%%%%%%%%%%%*:  -%%%%%%=
    :*%%%#%%*   -*%*-.:=%%%%+:..-#%#+%%%*
@@ -187,21 +213,23 @@ export const SQL_PROFESSIONAL_SECURITY_LOGS = {
 };
 
 export const LINUX_CLI_COMMANDS = [
+  { cmd: "/cv", desc: "view or download CV (PDF)" },
   { cmd: "/help", desc: "system manual & command guide" },
-  { cmd: "cat about.md", desc: "engineer bio" },
+  { cmd: "cat about.md", desc: "engineer bio & competencies" },
   { cmd: "/whoami", desc: "print user identity & role" },
   { cmd: "/contact", desc: "contact channels & links" },
   { cmd: "mysql -u root -p", desc: "connect to mysql database shell" },
   { cmd: "/valar-morghulis", desc: "all men must die" },
-  { cmd: "/game", desc: "return to RPS game" },
+  { cmd: "/game", desc: "play RPS game arena" },
   { cmd: "sudo rm -rf /", desc: "recursively force remove root directory" },
   { cmd: "/clear", desc: "clear screen" },
 ];
 
 export const MYSQL_CLI_COMMANDS = [
-  { cmd: "SELECT * FROM skills;", desc: "skills matrix" },
+  { cmd: "SELECT * FROM skills;", desc: "technical skills list" },
   { cmd: "SELECT * FROM projects;", desc: "production services" },
   { cmd: "SELECT * FROM experience;", desc: "career history" },
+  { cmd: "SELECT * FROM education;", desc: "academic qualifications" },
   { cmd: "SELECT * FROM metrics;", desc: "system metrics" },
   { cmd: "SHOW TABLES;", desc: "list all database tables" },
   { cmd: "exit;", desc: "exit mysql shell" },

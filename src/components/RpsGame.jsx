@@ -347,7 +347,7 @@ export default function RpsGame({ onStartPortfolio }) {
           e.currentTarget.style.color = "var(--text-dim)";
         }}
       >
-        Skip ➔
+        Back to Terminal ➔
       </button>
 
       {/* Dynamic Animated Header */}
@@ -385,7 +385,7 @@ export default function RpsGame({ onStartPortfolio }) {
               >
                 Tubagus Rivan —{" "}
                 <span style={{ color: "var(--terminal-cyan)" }}>
-                  Backend Developer
+                  Software Developer
                 </span>
               </div>
 
@@ -422,7 +422,7 @@ export default function RpsGame({ onStartPortfolio }) {
               >
                 Tubagus Rivan —{" "}
                 <span style={{ color: "var(--terminal-cyan)" }}>
-                  Backend Developer
+                  Software Developer
                 </span>
               </div>
             </motion.div>
@@ -942,7 +942,7 @@ export default function RpsGame({ onStartPortfolio }) {
                 className="term-btn term-btn-primary"
                 style={{ fontSize: "1rem", padding: "0.9rem 2.2rem" }}
               >
-                Boot Terminal Portfolio <ArrowRight size={18} />
+                Back to Terminal <ArrowRight size={18} />
               </button>
 
               <button

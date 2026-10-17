@@ -4,7 +4,7 @@ import Terminal from './components/Terminal';
 import ScreenTransitionLoader from './components/ScreenTransitionLoader';
 
 export default function App() {
-  const [screen, setScreen] = useState('game'); // 'game' | 'terminal'
+  const [screen, setScreen] = useState('terminal'); // 'terminal' | 'game'
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [targetScreen, setTargetScreen] = useState(null);
 
@@ -31,10 +31,10 @@ export default function App() {
         targetScreen={targetScreen} 
       />
 
-      {screen === 'game' ? (
-        <RpsGame onStartPortfolio={() => handleNavigate('terminal')} />
-      ) : (
+      {screen === 'terminal' ? (
         <Terminal onReturnToGame={() => handleNavigate('game')} />
+      ) : (
+        <RpsGame onStartPortfolio={() => handleNavigate('terminal')} />
       )}
     </div>
   );
