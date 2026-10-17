@@ -1,0 +1,350 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-matte: #0a0c10;
+  --bg-console: #0e1117;
+  --bg-surface: #161b24;
+  --border-subtle: #1e2636;
+  --border-active: #2a354d;
+
+  --terminal-green: #10b981;
+  --terminal-cyan: #06b6d4;
+  --terminal-amber: #f59e0b;
+  --terminal-red: #ef4444;
+
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --font-mono: 'Fira Code', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-matte);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar for Solid Console Body */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-matte);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+/* Terminal Content Container */
+.terminal-content-area {
+  flex: 1;
+  padding: 1.5rem 2rem 1.25rem 2rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  font-family: var(--font-mono);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.terminal-content-area input {
+  font-size: 0.88rem;
+}
+
+/* Contact Line Item Hover Effects */
+.contact-line-row:hover {
+  background: rgba(22, 27, 36, 0.9) !important;
+  transform: translateX(4px);
+}
+
+.contact-line-row:hover .contact-prefix {
+  color: var(--terminal-cyan) !important;
+}
+
+.contact-line-row:hover .contact-address {
+  color: #ffffff !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Terminal Quick Action Footer Bar with Generous Spacing */
+.terminal-footer-bar {
+  margin-top: 0.8rem;
+  padding: 1.25rem 2.5rem;
+  background: #11151f;
+  border-top: 1px solid #1e2636;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+  z-index: 30;
+}
+
+/* Solid Non-Glass Terminal Button */
+.term-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.6rem 1.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.term-btn:hover {
+  background: #1e2638;
+  border-color: var(--terminal-cyan);
+  color: var(--terminal-cyan);
+}
+
+.term-btn-primary {
+  background: #142233;
+  border-color: var(--terminal-cyan);
+  color: var(--terminal-cyan);
+}
+
+.term-btn-primary:hover {
+  background: var(--terminal-cyan);
+  color: #0a0c10;
+}
+
+/* Command Chip Button */
+.chip-btn {
+  background: #141923;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.chip-btn:hover {
+  background: #1c2436;
+  border-color: var(--terminal-green);
+  color: var(--terminal-green);
+}
+
+/* Horizontal Scroll Container */
+.chip-scroll-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.chip-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile Command Select Dropdown */
+.mobile-cmd-select {
+  display: none;
+  width: 100%;
+  background: #141923;
+  border: 1px solid var(--terminal-cyan);
+  color: var(--terminal-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* TABLET RESPONSIVE STYLES (640px - 1024px) */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .terminal-content-area {
+    padding: 1.25rem 1.25rem 1rem 1.25rem;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    gap: 0.75rem;
+  }
+
+  .terminal-content-area input {
+    font-size: 0.84rem;
+  }
+
+  .terminal-footer-bar {
+    padding: 1rem 1.25rem;
+  }
+
+  .chip-btn {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.75rem;
+  }
+}
+
+/* MOBILE RESPONSIVE STYLES (<640px) */
+@media (max-width: 639px) {
+  .terminal-content-area {
+    padding: 0.85rem 0.75rem 0.75rem 0.75rem !important;
+    font-size: 0.78rem !important;
+    line-height: 1.45 !important;
+    gap: 0.6rem !important;
+  }
+
+  .terminal-content-area input {
+    font-size: 0.78rem !important;
+  }
+
+  .desktop-chip-view {
+    display: none !important;
+  }
+
+  .mobile-cmd-select {
+    display: block !important;
+    font-size: 0.78rem !important;
+    padding: 0.55rem 0.75rem !important;
+  }
+
+  .terminal-footer-bar {
+    margin-top: 0.4rem !important;
+    padding: 0.65rem 0.75rem !important;
+  }
+
+  .terminal-onboarding-hint {
+    font-size: 0.72rem !important;
+    padding: 0.4rem 0.65rem !important;
+  }
+}
+
+/* Terminal Cursor Blink */
+.term-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  background-color: var(--terminal-green);
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Matrix Effect Canvas */
+.matrix-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.45;
+  z-index: 1;
+}
+
+/* First-Time Onboarding Hint Banner */
+.terminal-onboarding-hint {
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 4px;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.78rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  animation: subtlePulse 3s infinite ease-in-out;
+}
+
+.terminal-onboarding-hint kbd {
+  background: #1e2636;
+  border: 1px solid #334155;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.72rem;
+  color: var(--terminal-cyan);
+}
+
+.inline-tour-btn {
+  background: transparent;
+  border: none;
+  color: var(--terminal-cyan);
+  font-family: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0 0.2rem;
+}
+
+.inline-tour-btn:hover {
+  color: var(--terminal-green);
+}
+
+.hint-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.1rem 0.4rem;
+  line-height: 1;
+  border-radius: 3px;
+}
+
+.hint-close-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Tour Chip Highlighted Pulse */
+.chip-btn-tour {
+  border-color: var(--terminal-cyan) !important;
+  color: var(--terminal-cyan) !important;
+  background: rgba(6, 182, 212, 0.12) !important;
+  font-weight: 600;
+  animation: subtlePulse 2.5s infinite ease-in-out;
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+  }
+  50% {
+    box-shadow: 0 0 8px 1px rgba(6, 182, 212, 0.3);
+  }
+}
+
