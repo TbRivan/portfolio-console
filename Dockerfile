@@ -27,8 +27,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy custom Nginx configuration for SPA routing & caching
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose HTTP port 80
-EXPOSE 80
+# Expose HTTP ports (standard 80, node-standard 3000, and 8080)
+EXPOSE 80 3000 8080
 
 # Basic health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
