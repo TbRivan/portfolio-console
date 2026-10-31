@@ -30,9 +30,5 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Expose HTTP ports (standard 80, node-standard 3000, and 8080)
 EXPOSE 80 3000 8080
 
-# Basic health check
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
-
 # Run Nginx in foreground
 CMD ["nginx", "-g", "daemon off;"]
