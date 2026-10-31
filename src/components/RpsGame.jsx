@@ -147,6 +147,23 @@ const PLAYER_HANDS = {
   scissors: { id: "scissors", name: "scissors", beats: "paper" },
 };
 
+// Westeros Quotes for Match Results
+const WIN_QUOTE =
+  "No man could ask for a braver champion. Stand tall, ser.";
+
+const LOSE_QUOTES = [
+  "Every hurt is a lesson, and every lesson makes you better.",
+  "When you play the game of thrones, you win or you die. There is no middle ground.",
+  "The idea that we control the dragons is an illusion. They are a power man should never have trifled with.",
+  "Dunk the lunk, thick as a castle wall... yet a true knight rises and holds his shield again.",
+  "Can a man still be brave if he's afraid? That is the only time a man can be brave.",
+];
+
+const getRandomLoseQuote = () => {
+  const index = Math.floor(Math.random() * LOSE_QUOTES.length);
+  return LOSE_QUOTES[index];
+};
+
 export default function RpsGame({ onStartPortfolio }) {
   const containerRef = useRef(null);
   const userHandRef = useRef(null);
@@ -157,6 +174,7 @@ export default function RpsGame({ onStartPortfolio }) {
   const [scores, setScores] = useState({ player: 0, ai: 0 });
   const [phase, setPhase] = useState("selecting");
   const [winner, setWinner] = useState(null);
+  const [loseQuote, setLoseQuote] = useState(() => getRandomLoseQuote());
   const [selectedUserMove, setSelectedUserMove] = useState(null);
   const [selectedAiMove, setSelectedAiMove] = useState(null);
   const [roundResultText, setRoundResultText] = useState("");
@@ -267,6 +285,7 @@ export default function RpsGame({ onStartPortfolio }) {
                   setPhase("gameover");
                 } else if (newAiScore >= targetRounds) {
                   setWinner("ai");
+                  setLoseQuote(getRandomLoseQuote());
                   setPhase("gameover");
                 } else {
                   setPhase("result");
@@ -297,6 +316,7 @@ export default function RpsGame({ onStartPortfolio }) {
   const resetGame = () => {
     setScores({ player: 0, ai: 0 });
     setWinner(null);
+    setLoseQuote(getRandomLoseQuote());
     setRoundCount(1);
     setPhase("selecting");
     setSelectedUserMove(null);
@@ -881,10 +901,7 @@ export default function RpsGame({ onStartPortfolio }) {
                     marginBottom: "2rem",
                   }}
                 >
-                  "Artificial intelligence excels at pattern recognition and
-                  mathematical computation... but human backend engineering
-                  drives system architecture, fault tolerance, and data
-                  integrity. Welcome to my portfolio."
+                  "{WIN_QUOTE}"
                 </blockquote>
               </div>
             ) : (
@@ -922,9 +939,7 @@ export default function RpsGame({ onStartPortfolio }) {
                     marginBottom: "2rem",
                   }}
                 >
-                  "Pattern recognition and mathematical computation excel in
-                  systems... but human backend engineering drives architecture,
-                  fault tolerance, and data integrity. Welcome to my portfolio."
+                  "{loseQuote}"
                 </blockquote>
               </div>
             )}

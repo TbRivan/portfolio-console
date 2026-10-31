@@ -356,7 +356,13 @@ export default function Terminal({ onReturnToGame }) {
 
       let responseContent = "";
 
-      if (cmd === "cat about.md") {
+      if (
+        cmd === "cat about.md" ||
+        cmd === "/about" ||
+        cmd === "about" ||
+        cmd === "/bio" ||
+        cmd === "bio"
+      ) {
         responseContent = CAT_ABOUT_OUTPUT;
       } else if (cmd === "/whoami") {
         responseContent = WHOAMI_OUTPUT;
@@ -1053,6 +1059,7 @@ export default function Terminal({ onReturnToGame }) {
                 : [
                     "/cv",
                     "/help",
+                    "/about",
                     "cat about.md",
                     "/whoami",
                     "/contact",
@@ -1119,6 +1126,9 @@ export default function Terminal({ onReturnToGame }) {
                 <option value="/cv">/cv — view or download CV (PDF)</option>
                 <option value="/help">
                   /help — system manual & command guide
+                </option>
+                <option value="/about">
+                  /about — engineer bio & competencies
                 </option>
                 <option value="cat about.md">
                   cat about.md — engineer bio

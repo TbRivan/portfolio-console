@@ -96,7 +96,7 @@ export const TOUR_OUTPUT = `====================================================
 [1] LINUX KERNEL SHELL COMMANDS
     /cv                         - View in new tab or download CV (PDF)
     /help                       - Print system manual & command guide
-    cat about.md                - Display engineer profile & background
+    /about, cat about.md        - Display engineer profile & background
     /whoami                     - Print current user identity & role
     /contact                    - Display direct communication channels
     mysql -u root -p            - Connect to MySQL database shell session
@@ -215,6 +215,7 @@ export const SQL_PROFESSIONAL_SECURITY_LOGS = {
 export const LINUX_CLI_COMMANDS = [
   { cmd: "/cv", desc: "view or download CV (PDF)" },
   { cmd: "/help", desc: "system manual & command guide" },
+  { cmd: "/about", desc: "engineer bio & competencies" },
   { cmd: "cat about.md", desc: "engineer bio & competencies" },
   { cmd: "/whoami", desc: "print user identity & role" },
   { cmd: "/contact", desc: "contact channels & links" },

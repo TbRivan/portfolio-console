@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Download, Check, X } from "lucide-react";
+import { Download, Check, X, ExternalLink } from "lucide-react";
 
 const CONTACT_ITEMS = [
   {
