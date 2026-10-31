@@ -7,7 +7,10 @@ export default function LightningTypewriterText({
   intervalMs = 10, 
   startDelayMs = 120, 
   onComplete, 
-  onTick 
+  onTick,
+  isPre = false,
+  className = '',
+  style = {}
 }) {
   const [displayedText, setDisplayedText] = useState('');
   const [isTypingStarted, setIsTypingStarted] = useState(false);
@@ -56,7 +59,15 @@ export default function LightningTypewriterText({
   }, [text, chunkSize, intervalMs, startDelayMs]);
 
   return (
-    <span style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+    <span 
+      className={className}
+      style={{ 
+        whiteSpace: isPre ? 'pre' : 'pre-wrap', 
+        wordBreak: isPre ? 'normal' : 'break-word',
+        display: isPre ? 'inline-block' : 'inline',
+        ...style 
+      }}
+    >
       {displayedText}
       {(displayedText.length < text.length || !isTypingStarted) && (
         <span className="term-cursor" />

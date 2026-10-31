@@ -89,36 +89,36 @@ Copyright (c) 2000, 2026, Oracle and/or its affiliates.
 
 Type 'help;' or '\\h' for help. Type '\\c' to clear the current input statement.`;
 
-export const TOUR_OUTPUT = `================================================================================
+export const TOUR_OUTPUT = `============================================================
   TERMINAL PORTFOLIO MANUAL & COMMAND REFERENCE
-================================================================================
+============================================================
 
 [1] LINUX KERNEL SHELL COMMANDS
-    /cv                         - View in new tab or download CV (PDF)
-    /help                       - Print system manual & command guide
-    cat about.md                - Display engineer profile & background
-    /whoami                     - Print current user identity & role
-    /contact                    - Display direct communication channels
-    mysql -u root -p            - Connect to MySQL database shell session
-    /valar-morghulis            - all men must die
-    /clear                      - Flush terminal screen buffer
-    /game                       - Launch interactive RPS game arena
-    sudo rm -rf /               - Recursively force remove root directory
+  /cv                 - View or download CV (PDF)
+  /help               - Print manual & command guide
+  cat about.md        - Engineer profile & background
+  /whoami             - User identity & role
+  /contact            - Direct communication channels
+  mysql -u root -p    - Connect to MySQL database shell
+  /game               - Launch interactive RPS game
+  /valar-morghulis    - All men must die
+  sudo rm -rf /       - Force remove root directory
+  /clear              - Flush terminal screen buffer
 
-[2] MYSQL DATABASE SHELL COMMANDS (Run 'mysql -u root -p' to connect)
-    SELECT * FROM skills;       - Display tech stack & technical skills
-    SELECT * FROM projects;     - Display production services & performance stats
-    SELECT * FROM experience;   - Display career history & key achievements
-    SELECT * FROM education;    - Display academic history & qualifications
-    SELECT * FROM metrics;      - Display real-time database & system telemetry
-    exit                        - Close MySQL session and return to Linux shell
+[2] MYSQL SHELL COMMANDS (connect: 'mysql -u root -p')
+  SELECT * FROM skills;     - Technical skills list
+  SELECT * FROM projects;   - Production services & stats
+  SELECT * FROM experience; - Career history & achievements
+  SELECT * FROM education;  - Academic qualifications
+  SELECT * FROM metrics;    - System telemetry
+  SHOW TABLES;              - List all tables
+  exit;                     - Return to Linux shell
 
-[3] KEYBOARD NAVIGATION
-    [TAB]                       - Auto-complete matching command
-    [UP / DOWN]                 - Cycle command history
-    [CTRL + C]                  - Cancel current input line
-
-================================================================================`;
+[3] KEYBOARD SHORTCUTS
+  [TAB]               - Auto-complete matching command
+  [UP / DOWN]         - Cycle command history
+  [CTRL + C]          - Cancel current input line
+============================================================`;
 
 export const WHOAMI_OUTPUT = `[HTTP 200 OK] User: Visitor | Identity: Tubagus Rivan Maulana Sidiq | Role: Software Developer`;
 

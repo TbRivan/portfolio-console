@@ -189,6 +189,57 @@ body {
   appearance: none;
 }
 
+/* Table Output Container for SQL SELECT Results & Monospace Tables */
+.terminal-table-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  margin: 0.2rem 0;
+  padding-bottom: 0.35rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  scrollbar-width: thin;
+  scrollbar-color: #2a354d rgba(14, 17, 23, 0.6);
+}
+
+.terminal-table-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.terminal-table-container::-webkit-scrollbar-track {
+  background: rgba(14, 17, 23, 0.6);
+  border-radius: 2px;
+}
+
+.terminal-table-container::-webkit-scrollbar-thumb {
+  background: #2a354d;
+  border-radius: 2px;
+}
+
+.terminal-table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--terminal-cyan);
+}
+
+/* Long Text Container for Detailed Responses (/help, cat about.md, etc.) */
+.terminal-long-text-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.terminal-standard-text-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
 /* TABLET RESPONSIVE STYLES (640px - 1024px) */
 @media (min-width: 640px) and (max-width: 1024px) {
   .terminal-content-area {
@@ -200,6 +251,20 @@ body {
 
   .terminal-content-area input {
     font-size: 0.83rem;
+  }
+
+  .terminal-table-container {
+    font-size: 0.74rem !important;
+    line-height: 1.32 !important;
+  }
+
+  .terminal-long-text-container {
+    font-size: 0.78rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .terminal-standard-text-container {
+    font-size: 0.84rem !important;
   }
 
   .terminal-footer-bar {
@@ -224,6 +289,22 @@ body {
   .terminal-content-area input {
     font-size: 0.74rem !important;
     min-width: 0 !important;
+  }
+
+  .terminal-table-container {
+    font-size: 0.63rem !important;
+    line-height: 1.28 !important;
+    letter-spacing: -0.02em;
+    padding-bottom: 0.45rem !important;
+  }
+
+  .terminal-long-text-container {
+    font-size: 0.7rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .terminal-standard-text-container {
+    font-size: 0.74rem !important;
   }
 
   .desktop-chip-view {
@@ -273,6 +354,21 @@ body {
   }
 
   .terminal-content-area input {
+    font-size: 0.7rem !important;
+  }
+
+  .terminal-table-container {
+    font-size: 0.54rem !important;
+    line-height: 1.22 !important;
+    letter-spacing: -0.03em;
+  }
+
+  .terminal-long-text-container {
+    font-size: 0.65rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .terminal-standard-text-container {
     font-size: 0.7rem !important;
   }
 

@@ -885,11 +885,12 @@ export default function Terminal({ onReturnToGame }) {
                   </div>
                 )}
 
-                {item.type === "typed-output" && (
-                  <div>
-                    {item.cmdKey.includes("contact") ? (
-                      <ContactTable />
-                    ) : item.cmdKey.startsWith("cv-") ? (
+                {(item.type === "typed-output" || item.type === "text") && (() => {
+                  if (item.cmdKey && item.cmdKey.includes("contact")) {
+                    return <ContactTable />;
+                  }
+                  if (item.cmdKey && item.cmdKey.startsWith("cv-")) {
+                    return (
                       <div
                         style={{
                           margin: "0.45rem 0",
@@ -911,22 +912,51 @@ export default function Terminal({ onReturnToGame }) {
                           {item.content}
                         </span>
                       </div>
-                    ) : isLast ? (
-                      <LightningTypewriterText
-                        text={item.content}
-                        chunkSize={1}
-                        intervalMs={10}
-                        startDelayMs={120}
-                        onTick={scrollToBottomRealtime}
-                        onComplete={() => setIsTyping(false)}
-                      />
-                    ) : (
-                      <span style={{ whiteSpace: "pre-wrap" }}>
-                        {item.content}
-                      </span>
-                    )}
-                  </div>
-                )}
+                    );
+                  }
+
+                  const content = item.content || "";
+                  const isTable =
+                    content.includes("+---") ||
+                    content.includes("+-") ||
+                    content.includes("| Tables_in_") ||
+                    content.includes("Valar Dohaeris") ||
+                    content.includes("COMMAND REFERENCE") ||
+                    content.includes("TERMINAL PORTFOLIO MANUAL") ||
+                    item.cmdKey === "/help";
+                  const isLong = content.length > 180;
+
+                  const containerClass = isTable
+                    ? "terminal-table-container"
+                    : isLong
+                      ? "terminal-long-text-container"
+                      : "terminal-standard-text-container";
+
+                  return (
+                    <div className={containerClass}>
+                      {isLast ? (
+                        <LightningTypewriterText
+                          text={content}
+                          chunkSize={isTable ? 4 : 1}
+                          intervalMs={isTable ? 4 : 10}
+                          startDelayMs={100}
+                          isPre={isTable}
+                          onTick={scrollToBottomRealtime}
+                          onComplete={() => setIsTyping(false)}
+                        />
+                      ) : (
+                        <span
+                          style={{
+                            whiteSpace: isTable ? "pre" : "pre-wrap",
+                            display: isTable ? "inline-block" : "inline",
+                          }}
+                        >
+                          {content}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
             );
           })}
