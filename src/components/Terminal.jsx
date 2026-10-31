@@ -356,13 +356,7 @@ export default function Terminal({ onReturnToGame }) {
 
       let responseContent = "";
 
-      if (
-        cmd === "cat about.md" ||
-        cmd === "/about" ||
-        cmd === "about" ||
-        cmd === "/bio" ||
-        cmd === "bio"
-      ) {
+      if (cmd === "cat about.md") {
         responseContent = CAT_ABOUT_OUTPUT;
       } else if (cmd === "/whoami") {
         responseContent = WHOAMI_OUTPUT;
@@ -657,37 +651,41 @@ export default function Terminal({ onReturnToGame }) {
           style={{
             background: "#161b24",
             borderBottom: "1px solid #1e2636",
-            padding: "0.75rem 1.5rem",
+            padding: "clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 3vw, 1.5rem)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             userSelect: "none",
+            flexShrink: 0,
           }}
         >
           {/* macOS Traffic Lights */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
             <span
               style={{
-                width: "13px",
-                height: "13px",
+                width: "clamp(10px, 1.5vw, 13px)",
+                height: "clamp(10px, 1.5vw, 13px)",
                 borderRadius: "50%",
                 background: "#ef4444",
+                display: "inline-block",
               }}
             ></span>
             <span
               style={{
-                width: "13px",
-                height: "13px",
+                width: "clamp(10px, 1.5vw, 13px)",
+                height: "clamp(10px, 1.5vw, 13px)",
                 borderRadius: "50%",
                 background: "#f59e0b",
+                display: "inline-block",
               }}
             ></span>
             <span
               style={{
-                width: "13px",
-                height: "13px",
+                width: "clamp(10px, 1.5vw, 13px)",
+                height: "clamp(10px, 1.5vw, 13px)",
                 borderRadius: "50%",
                 background: "#10b981",
+                display: "inline-block",
               }}
             ></span>
           </div>
@@ -697,18 +695,23 @@ export default function Terminal({ onReturnToGame }) {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "0.5rem",
-              fontSize: "0.85rem",
+              gap: "0.4rem",
+              fontSize: "clamp(0.68rem, 1.8vw, 0.85rem)",
               color: "var(--text-muted)",
               fontFamily: "var(--font-mono)",
+              overflow: "hidden",
+              flex: 1,
+              justifyContent: "center",
             }}
           >
-            <TermIcon size={15} color="var(--terminal-cyan)" />
-            <span>tbrivan@dev-box: ~ (zsh)</span>
+            <TermIcon size={13} color="var(--terminal-cyan)" style={{ flexShrink: 0 }} />
+            <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              tbrivan@dev-box: ~ (zsh)
+            </span>
           </div>
 
           {/* Right Spacer */}
-          <div style={{ width: "50px" }} />
+          <div style={{ width: "clamp(30px, 5vw, 50px)", flexShrink: 0 }} />
         </div>
 
         {/* Fullscreen Content Area */}
@@ -932,7 +935,7 @@ export default function Terminal({ onReturnToGame }) {
           {!isTyping && !isRebooting && (
             <div style={{ marginTop: "0.5rem" }}>
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                style={{ display: "flex", alignItems: "center", gap: "0.4rem", minWidth: 0 }}
               >
                 <span
                   style={{
@@ -944,6 +947,9 @@ export default function Terminal({ onReturnToGame }) {
                           ? "#38bdf8"
                           : "var(--terminal-green)",
                     fontWeight: 600,
+                    whiteSpace: "nowrap",
+                    flexShrink: 0,
+                    fontSize: "clamp(0.65rem, 1.8vw, 0.88rem)",
                   }}
                 >
                   {crashedState
@@ -965,13 +971,14 @@ export default function Terminal({ onReturnToGame }) {
                     crashedState
                       ? "type 'Y' to restart..."
                       : awaitingCvConfirm
-                        ? "type 'v' to view in new tab, 'd' to download, or 'n' to cancel..."
+                        ? "v = view, d = download, n = cancel"
                         : terminalMode === "mysql"
-                          ? "try 'SELECT * FROM skills;'"
-                          : "try 'mysql -u root -p' or 'cat about.md'"
+                          ? "SELECT * FROM skills;"
+                          : "/help or cat about.md"
                   }
                   style={{
                     flex: 1,
+                    minWidth: 0,
                     background: "transparent",
                     border: "none",
                     outline: "none",
@@ -1059,7 +1066,6 @@ export default function Terminal({ onReturnToGame }) {
                 : [
                     "/cv",
                     "/help",
-                    "/about",
                     "cat about.md",
                     "/whoami",
                     "/contact",
@@ -1127,11 +1133,8 @@ export default function Terminal({ onReturnToGame }) {
                 <option value="/help">
                   /help — system manual & command guide
                 </option>
-                <option value="/about">
-                  /about — engineer bio & competencies
-                </option>
                 <option value="cat about.md">
-                  cat about.md — engineer bio
+                  cat about.md — engineer bio & competencies
                 </option>
                 <option value="/whoami">
                   /whoami — print user identity & role

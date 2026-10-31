@@ -192,37 +192,38 @@ body {
 /* TABLET RESPONSIVE STYLES (640px - 1024px) */
 @media (min-width: 640px) and (max-width: 1024px) {
   .terminal-content-area {
-    padding: 1.25rem 1.25rem 1rem 1.25rem;
-    font-size: 0.84rem;
+    padding: 1.1rem 1.1rem 0.9rem 1.1rem;
+    font-size: 0.83rem;
     line-height: 1.5;
-    gap: 0.75rem;
+    gap: 0.7rem;
   }
 
   .terminal-content-area input {
-    font-size: 0.84rem;
+    font-size: 0.83rem;
   }
 
   .terminal-footer-bar {
-    padding: 1rem 1.25rem;
+    padding: 0.9rem 1.1rem;
   }
 
   .chip-btn {
-    font-size: 0.78rem;
-    padding: 0.35rem 0.75rem;
+    font-size: 0.77rem;
+    padding: 0.32rem 0.7rem;
   }
 }
 
 /* MOBILE RESPONSIVE STYLES (<640px) */
 @media (max-width: 639px) {
   .terminal-content-area {
-    padding: 0.85rem 0.75rem 0.75rem 0.75rem !important;
-    font-size: 0.78rem !important;
-    line-height: 1.45 !important;
-    gap: 0.6rem !important;
+    padding: 0.75rem 0.65rem 0.65rem 0.65rem !important;
+    font-size: 0.74rem !important;
+    line-height: 1.42 !important;
+    gap: 0.5rem !important;
   }
 
   .terminal-content-area input {
-    font-size: 0.78rem !important;
+    font-size: 0.74rem !important;
+    min-width: 0 !important;
   }
 
   .desktop-chip-view {
@@ -231,18 +232,56 @@ body {
 
   .mobile-cmd-select {
     display: block !important;
-    font-size: 0.78rem !important;
-    padding: 0.55rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    padding: 0.5rem 0.65rem !important;
   }
 
   .terminal-footer-bar {
-    margin-top: 0.4rem !important;
-    padding: 0.65rem 0.75rem !important;
+    margin-top: 0.3rem !important;
+    padding: 0.55rem 0.65rem !important;
+    gap: 0.4rem !important;
   }
 
   .terminal-onboarding-hint {
+    font-size: 0.68rem !important;
+    padding: 0.35rem 0.55rem !important;
+    gap: 0.35rem !important;
+  }
+
+  /* Terminal header bar adjustments */
+  .terminal-header-title {
     font-size: 0.72rem !important;
-    padding: 0.4rem 0.65rem !important;
+  }
+
+  /* Prompt prefix shrink on very small screens */
+  .terminal-prompt-prefix {
+    font-size: 0.68rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Contact table responsive */
+  .contact-line-row {
+    padding: 0.4rem 0.55rem !important;
+  }
+}
+
+/* EXTRA SMALL MOBILE (<400px) */
+@media (max-width: 399px) {
+  .terminal-content-area {
+    padding: 0.6rem 0.5rem 0.55rem 0.5rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  .terminal-content-area input {
+    font-size: 0.7rem !important;
+  }
+
+  .terminal-footer-bar {
+    padding: 0.45rem 0.5rem !important;
+  }
+
+  .terminal-onboarding-hint {
+    font-size: 0.65rem !important;
   }
 }
 

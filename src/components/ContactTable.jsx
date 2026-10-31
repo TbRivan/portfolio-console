@@ -114,7 +114,7 @@ export default function ContactTable() {
           display: "flex",
           flexDirection: "column",
           gap: "0.35rem",
-          maxWidth: "560px",
+          maxWidth: "min(560px, 100%)",
         }}
       >
         {CONTACT_ITEMS.map((item, idx) => {
@@ -245,8 +245,10 @@ export default function ContactTable() {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "0.75rem",
+                    gap: "0.65rem",
                     overflow: "hidden",
+                    minWidth: 0,
+                    width: "100%",
                   }}
                 >
                   <span
@@ -261,8 +263,9 @@ export default function ContactTable() {
                         ? "var(--terminal-green)"
                         : "var(--terminal-cyan)",
                       fontWeight: 600,
-                      minWidth: "95px",
-                      fontSize: "0.88rem",
+                      minWidth: "clamp(68px, 10vw, 95px)",
+                      flexShrink: 0,
+                      fontSize: "clamp(0.78rem, 2vw, 0.88rem)",
                     }}
                   >
                     {item.channel}
@@ -275,10 +278,12 @@ export default function ContactTable() {
                         : item.isDownload
                           ? "var(--terminal-cyan)"
                           : "var(--text-main)",
-                      fontSize: "0.88rem",
+                      fontSize: "clamp(0.75rem, 2vw, 0.88rem)",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
+                      minWidth: 0,
+                      flex: 1,
                     }}
                   >
                     {isCopied

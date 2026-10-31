@@ -12,8 +12,8 @@ function HumanHandSvg({ gesture, side = "player", color = "#06b6d4" }) {
   return (
     <div
       style={{
-        width: "clamp(220px, 28vw, 380px)",
-        height: "clamp(220px, 28vw, 380px)",
+        width: "clamp(180px, 24vw, 380px)",
+        height: "clamp(180px, 24vw, 380px)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -333,7 +333,7 @@ export default function RpsGame({ onStartPortfolio }) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "2rem 0",
+        padding: "clamp(1rem, 2.5vw, 2rem) 0",
         background: "#0a0c10",
         color: "#e2e8f0",
         position: "relative",
@@ -345,12 +345,12 @@ export default function RpsGame({ onStartPortfolio }) {
         onClick={onStartPortfolio}
         style={{
           position: "absolute",
-          top: "1.5rem",
-          right: "2rem",
+          top: "clamp(0.75rem, 2vw, 1.5rem)",
+          right: "clamp(0.75rem, 2.5vw, 2rem)",
           background: "none",
           border: "none",
           color: "var(--text-dim)",
-          fontSize: "0.9rem",
+          fontSize: "clamp(0.75rem, 1.8vw, 0.9rem)",
           fontFamily: "var(--font-mono)",
           fontWeight: 500,
           cursor: "pointer",
@@ -520,7 +520,7 @@ export default function RpsGame({ onStartPortfolio }) {
             <div
               style={{
                 display: "flex",
-                gap: "3rem",
+                gap: "clamp(1.25rem, 4vw, 3rem)",
                 justifyContent: "center",
                 alignItems: "center",
                 flexWrap: "wrap",
@@ -621,7 +621,7 @@ export default function RpsGame({ onStartPortfolio }) {
             <div style={{ textAlign: "center", zIndex: 20 }}>
               <div
                 style={{
-                  fontSize: "0.85rem",
+                  fontSize: "clamp(0.7rem, 1.8vw, 0.85rem)",
                   color: "var(--terminal-cyan)",
                   fontWeight: 600,
                   letterSpacing: "0.1em",
@@ -639,7 +639,7 @@ export default function RpsGame({ onStartPortfolio }) {
               </div>
               <div
                 style={{
-                  fontSize: "1.4rem",
+                  fontSize: "clamp(0.9rem, 2.5vw, 1.4rem)",
                   fontWeight: 700,
                   color: "#ffffff",
                   marginTop: "0.5rem",
@@ -653,7 +653,7 @@ export default function RpsGame({ onStartPortfolio }) {
             {/* Center Versus Badge */}
             <div
               style={{
-                fontSize: "2.5rem",
+                fontSize: "clamp(1.4rem, 4vw, 2.5rem)",
                 fontWeight: 900,
                 color: "var(--text-dim)",
                 fontFamily: "var(--font-mono)",
@@ -667,7 +667,7 @@ export default function RpsGame({ onStartPortfolio }) {
             <div style={{ textAlign: "center", zIndex: 20 }}>
               <div
                 style={{
-                  fontSize: "0.85rem",
+                  fontSize: "clamp(0.7rem, 1.8vw, 0.85rem)",
                   color: "var(--terminal-green)",
                   fontWeight: 600,
                   letterSpacing: "0.1em",
@@ -685,7 +685,7 @@ export default function RpsGame({ onStartPortfolio }) {
               </div>
               <div
                 style={{
-                  fontSize: "1.4rem",
+                  fontSize: "clamp(0.9rem, 2.5vw, 1.4rem)",
                   fontWeight: 700,
                   color: "#ffffff",
                   marginTop: "0.5rem",
@@ -814,7 +814,7 @@ export default function RpsGame({ onStartPortfolio }) {
                   <div
                     style={{
                       display: "flex",
-                      gap: "3rem",
+                      gap: "clamp(1.25rem, 4vw, 3rem)",
                       justifyContent: "center",
                       alignItems: "center",
                       flexWrap: "wrap",
@@ -861,9 +861,10 @@ export default function RpsGame({ onStartPortfolio }) {
             ref={quoteRef}
             style={{
               textAlign: "center",
-              maxWidth: "750px",
-              padding: "1rem",
+              maxWidth: "min(750px, 92vw)",
+              padding: "clamp(0.5rem, 2vw, 1rem)",
               zIndex: 20,
+              width: "100%",
             }}
           >
             {winner === "player" ? (
@@ -873,32 +874,32 @@ export default function RpsGame({ onStartPortfolio }) {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "0.5rem",
-                    padding: "0.4rem 1rem",
+                    padding: "0.35rem 0.85rem",
                     background: "rgba(16, 185, 129, 0.15)",
                     border: "1px solid var(--terminal-green)",
                     borderRadius: "4px",
                     color: "var(--terminal-green)",
-                    fontSize: "0.9rem",
-                    marginBottom: "1.5rem",
+                    fontSize: "clamp(0.72rem, 2vw, 0.9rem)",
+                    marginBottom: "clamp(0.75rem, 2.5vw, 1.5rem)",
                     fontWeight: 700,
                   }}
                 >
-                  <Trophy size={16} /> VISITOR WON THE MATCH ({targetRounds}-
+                  <Trophy size={15} /> VISITOR WON THE MATCH ({targetRounds}-
                   {scores.ai})
                 </div>
 
                 <blockquote
                   style={{
-                    fontSize: "1.25rem",
+                    fontSize: "clamp(0.88rem, 2.2vw, 1.25rem)",
                     lineHeight: 1.65,
                     color: "#ffffff",
                     fontStyle: "normal",
                     background: "#121622",
                     borderLeft: "4px solid var(--terminal-cyan)",
-                    padding: "1.75rem 2rem",
+                    padding: "clamp(0.9rem, 3vw, 1.75rem) clamp(0.9rem, 3vw, 2rem)",
                     borderRadius: "0 8px 8px 0",
                     textAlign: "left",
-                    marginBottom: "2rem",
+                    marginBottom: "clamp(1rem, 3vw, 2rem)",
                   }}
                 >
                   "{WIN_QUOTE}"
@@ -911,32 +912,32 @@ export default function RpsGame({ onStartPortfolio }) {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "0.5rem",
-                    padding: "0.4rem 1rem",
+                    padding: "0.35rem 0.85rem",
                     background: "rgba(255, 255, 255, 0.05)",
                     border: "1px solid var(--border-subtle)",
                     borderRadius: "4px",
                     color: "var(--text-muted)",
-                    fontSize: "0.9rem",
-                    marginBottom: "1.5rem",
+                    fontSize: "clamp(0.72rem, 2vw, 0.9rem)",
+                    marginBottom: "clamp(0.75rem, 2.5vw, 1.5rem)",
                     fontWeight: 600,
                   }}
                 >
-                  <ShieldCheck size={16} /> RIVAN WON THE MATCH ({scores.player}
+                  <ShieldCheck size={15} /> RIVAN WON THE MATCH ({scores.player}
                   -{targetRounds})
                 </div>
 
                 <blockquote
                   style={{
-                    fontSize: "1.25rem",
+                    fontSize: "clamp(0.88rem, 2.2vw, 1.25rem)",
                     lineHeight: 1.65,
                     color: "#ffffff",
                     fontStyle: "normal",
                     background: "#121622",
                     borderLeft: "4px solid var(--terminal-green)",
-                    padding: "1.75rem 2rem",
+                    padding: "clamp(0.9rem, 3vw, 1.75rem) clamp(0.9rem, 3vw, 2rem)",
                     borderRadius: "0 8px 8px 0",
                     textAlign: "left",
-                    marginBottom: "2rem",
+                    marginBottom: "clamp(1rem, 3vw, 2rem)",
                   }}
                 >
                   "{loseQuote}"
@@ -948,24 +949,30 @@ export default function RpsGame({ onStartPortfolio }) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                gap: "1.25rem",
+                gap: "clamp(0.65rem, 2vw, 1.25rem)",
                 flexWrap: "wrap",
               }}
             >
               <button
                 onClick={onStartPortfolio}
                 className="term-btn term-btn-primary"
-                style={{ fontSize: "1rem", padding: "0.9rem 2.2rem" }}
+                style={{
+                  fontSize: "clamp(0.82rem, 2vw, 1rem)",
+                  padding: "clamp(0.55rem, 1.5vw, 0.9rem) clamp(1rem, 3vw, 2.2rem)",
+                }}
               >
-                Back to Terminal <ArrowRight size={18} />
+                Back to Terminal <ArrowRight size={16} />
               </button>
 
               <button
                 onClick={resetGame}
                 className="term-btn"
-                style={{ fontSize: "1.05rem", padding: "0.9rem 1.8rem" }}
+                style={{
+                  fontSize: "clamp(0.82rem, 2vw, 1.05rem)",
+                  padding: "clamp(0.55rem, 1.5vw, 0.9rem) clamp(0.9rem, 2.5vw, 1.8rem)",
+                }}
               >
-                <RotateCcw size={17} /> Play Again
+                <RotateCcw size={15} /> Play Again
               </button>
             </div>
           </div>
